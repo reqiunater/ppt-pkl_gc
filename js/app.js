@@ -3,7 +3,7 @@ window.WebFontConfig = {
     families: ['Press Start 2P'],
   },
   active() {
-    init();
+    mainPage();
   },
 };
 
@@ -36,8 +36,6 @@ async function setup() {
       fill: "#000000"
     }
   })
-
-  judul.x = app.screen.w
 
   const textGreat = new PIXI.Text({
     text: "Great",
@@ -100,6 +98,7 @@ async function setup() {
 }
 
 async function mainPage() {
+  console.log("mainPage function called");
   await app.init({ background: "#ffffff", resizeTo: window })
   document.body.appendChild(app.canvas);
 
@@ -113,20 +112,21 @@ async function mainPage() {
   }
   const titlestyle = {
     fontFamily: "Press Start 2P",
-    fill: "#000000",
     fontSize: 32
   }
 
   const titleTop = new PIXI.Text({
     text: "Laporan Praktik",
     style: {
-      ...titlestyle
+      ...titlestyle,
+      fill: "#000000"
     }
   })
   const titleBottom = new PIXI.Text({
     text: "Kerja Lapangan",
     style: {
-      ...titlestyle
+      ...titlestyle,
+      fill: "#000000"
     }
   })
 
@@ -134,7 +134,7 @@ async function mainPage() {
     text: "Great",
     style: {
       ...greatstyle,
-      fill: "#444444"
+      fill: "#4A86E8"
     }
   })
   const greatBottom = new PIXI.Text({
@@ -169,11 +169,21 @@ async function mainPage() {
     }
   })
 
-  greatTop.anchor.set(0.5);
-  app.stage.addChild(greatTop);
-}
+  const container = new PIXI.Container();
 
-(async () => {
-  // await setup();
-  await mainPage();
-})();
+  // const greatcode = [greatTop,codeTop,greatBottom,codeBottom]
+  const texts = [titleTop, titleBottom, greatTop, greatBottom, codeTop, codeBottom, keterangan];
+  
+  
+  let yPos = 0; // Define yPos here
+  texts.forEach((text, index) => {
+    text.y = yPos;
+    yPos += text.height + 20; // Add a 10px gap between each text element
+  
+  });
+  
+  texts.forEach(text => container.addChild(text));
+  container.x = app.screen.width / 6;
+  container.y = app.screen.height / 10;
+  app.stage.addChild(container);
+}
